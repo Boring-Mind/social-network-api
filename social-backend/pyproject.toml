@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-Django = "^4.1.4"
+Django = {extras = ["argon2"], version = "^4.1.4"}
 djangorestframework = "^3.14.0"
 psycopg2-binary = "^2.9.5"
 uwsgi = "^2.0.21"
