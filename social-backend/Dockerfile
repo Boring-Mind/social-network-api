@@ -26,7 +26,7 @@ ENV PATH="${PATH}:/root/.local/bin"
 RUN mkdir -p /application
 WORKDIR /application
 
-COPY . .
+COPY ./backend .
 
 RUN python3 manage.py collectstatic
 

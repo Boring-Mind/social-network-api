@@ -5,7 +5,7 @@ services:
     restart: always
 
   social-backend:
-    build: social-backend
+    build: ./social-backend
     ports:
       - "8000:8000"
     restart: unless-stopped
@@ -17,6 +17,8 @@ services:
     image: postgres:13.9-alpine3.17
     volumes:
       - ./postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=test_admin
       - POSTGRES_PASSWORD=S0m3Passw0rd
