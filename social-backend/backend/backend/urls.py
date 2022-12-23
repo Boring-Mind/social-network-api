@@ -14,13 +14,15 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
     TokenVerifyView,
     TokenBlacklistView,
 )
+
+from api import urls as api_urls
 
 urlpatterns = [
     path("admin/", admin.site.urls),
@@ -29,4 +31,5 @@ urlpatterns = [
     path("api/token/verify/", TokenVerifyView.as_view(), name="token_verify"),
     # ToDo: remove this view after testing
     path("api/token/blacklist/", TokenBlacklistView.as_view(), name="token_blacklist"),
+    path("api/", include(api_urls)),
 ]
