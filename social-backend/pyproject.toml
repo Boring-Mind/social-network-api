@@ -13,8 +13,6 @@ djangorestframework = "^3.14.0"
 psycopg2-binary = "^2.9.5"
 uwsgi = "^2.0.21"
 python-decouple = "^3.6"
-# Is required for Django argon2 dependency
-cffi = "^1.15.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.12.0"

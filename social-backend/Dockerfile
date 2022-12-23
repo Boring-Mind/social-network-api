@@ -31,8 +31,7 @@ COPY ./backend .
 RUN python3 manage.py collectstatic
 
 # Fixing issue with missing attrs package in pytest
-RUN pip install attrs
-
-ENTRYPOINT ["uwsgi", "--ini", "/application/uwsgi.ini"]
+# cffi package is needed for Argon2 dependency
+RUN pip install attrs cffi
 
 # ToDo: run migrations
