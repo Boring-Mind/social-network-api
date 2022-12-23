@@ -13,6 +13,7 @@ djangorestframework = "^3.14.0"
 psycopg2-binary = "^2.9.5"
 uwsgi = "^2.0.21"
 python-decouple = "^3.6"
+djangorestframework-simplejwt = {extras = ["crypto"], version = "^5.2.2"}
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.12.0"
