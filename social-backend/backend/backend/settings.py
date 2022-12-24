@@ -133,14 +133,21 @@ SIMPLE_JWT = {
     "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": True,
     "ALGORITHM": "RS256",
-    "SIGNING_KEY": config("JWT_RSA_PRIVATE_KEY"),
-    "VERIFYING_KEY": config("JWT_RSA_PUBLIC_KEY"),
+    "SIGNING_KEY": config("JWT_RSA_PRIVATE_KEY").replace("\\n", "\n"),
+    "VERIFYING_KEY": config("JWT_RSA_PUBLIC_KEY").replace("\\n", "\n"),
 }
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    "DEFAULT_RENDERER_CLASSES": (
+        # Added orjson renderer as the fastest renderer for JSON
+        "drf_orjson_renderer.renderers.ORJSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
+    # Added orjson parser as fastest parser for JSON
+    "DEFAULT_PARSER_CLASSES": ("drf_orjson_renderer.parsers.ORJSONParser",),
 }
 
 
@@ -172,7 +179,7 @@ CACHES = {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
         "LOCATION": "redis://cache:6379",
         "OPTIONS": {
-            "MAX_ENTRIES": 600,
+            # Using HiRedis parser to improve performance of interaction with Redis
             "parser_class": "redis.connection.HiredisParser",
         },
         "KEY_PREFIX": "django_api_",

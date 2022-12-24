@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
+from api.models import Post
+
 
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
@@ -42,3 +44,15 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
 
         return user
+
+
+class PostSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ("__all__",)
+        extra_kwargs = {
+            "created_on": {"read_only": True},
+            "updated_on": {"read_only": True},
+        }

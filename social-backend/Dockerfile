@@ -32,6 +32,7 @@ RUN python3 manage.py collectstatic
 
 # Fixing issue with missing attrs package in pytest
 # cffi package is needed for Argon2 dependency
-RUN pip install attrs cffi
+# Cryptography is needed for using RSA algorithm in JWT
+RUN pip install attrs cffi cryptography
 
 # ToDo: run migrations
