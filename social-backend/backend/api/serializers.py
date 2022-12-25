@@ -23,6 +23,7 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
         ]
         extra_kwargs = {
+            "id": {"read_only": True},
             "password": {"write_only": True, "validators": [validate_password]},
             "email": {"required": True},
             "last_login": {"read_only": True},
@@ -47,12 +48,22 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    author = UserSerializer(read_only=True)
+    """Post serializer.
+
+    Write to Post can be performed only using authenticated user.
+    """
+
+    # author field is being propagated from the request
+    # (currently authenticated user)
+    author = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
 
     class Meta:
         model = Post
-        fields = ("__all__",)
-        extra_kwargs = {
-            "created_on": {"read_only": True},
-            "updated_on": {"read_only": True},
-        }
+        fields = ("author", "content", "created_on", "edited_on")
+        read_only_fields = ["created_on", "edited_on"]
+
+    def create(self, validated_data):
+        # Request is passed to serializer's context from class-based view by default
+        validated_data["author"] = self.context["request"].user
+
+        return Post.objects.create(**validated_data)

@@ -16,7 +16,3 @@ class PostCreateApiView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticated,)
-
-    def create(self, request, *args, **kwargs):
-        request.data["author"] = request.user
-        return super().create(request, *args, **kwargs)
