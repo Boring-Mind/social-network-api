@@ -185,6 +185,6 @@ CACHES = {
             # Using HiRedis parser to improve performance of interaction with Redis
             "parser_class": "redis.connection.HiredisParser",
         },
-        "KEY_PREFIX": "django_api_",
+        "KEY_PREFIX": "django_api",
     }
 }

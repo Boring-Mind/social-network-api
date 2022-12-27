@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User
-from django.views.decorators.cache import never_cache
-from rest_framework.generics import CreateAPIView
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
+from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from api.models import Post
-from api.serializers import UserSerializer, PostSerializer
+from api.paginators import DefaultPaginator
+from api.serializers import UserSerializer, PostSerializer, UserActivitySerializer
 
 
 class UserSignupApiView(CreateAPIView):
@@ -12,16 +14,16 @@ class UserSignupApiView(CreateAPIView):
     serializer_class = UserSerializer
     permission_classes = (AllowAny,)
 
-    @never_cache
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
-
 
 class PostCreateApiView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
     permission_classes = (IsAuthenticated,)
 
-    @never_cache
-    def create(self, request, *args, **kwargs):
-        return super().create(request, *args, **kwargs)
+
+@method_decorator(cache_page(30), name="dispatch")
+class UserActivityApiView(ListAPIView):
+    queryset = User.objects.all().order_by("id")
+    serializer_class = UserActivitySerializer
+    permission_classes = (AllowAny,)
+    pagination_class = DefaultPaginator
