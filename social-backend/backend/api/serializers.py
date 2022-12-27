@@ -5,7 +5,7 @@ from django.contrib.auth.password_validation import validate_password
 from django.core.cache import cache
 from rest_framework import serializers
 
-from api.models import Post
+from api.models import Post, Like
 from backend.middlewares import UpdateLastActivityMiddleware
 
 
@@ -84,3 +84,21 @@ class UserActivitySerializer(serializers.ModelSerializer):
                 user_id=obj.id
             )
         )
+
+
+class LikeSerializer(serializers.ModelSerializer):
+    person = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
+    post = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
+
+    class Meta:
+        model = Like
+        fields = ("id", "person", "post", "created")
+
+
+class PostWithLikesSerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+    likes = LikeSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Post
+        fields = ("id", "author", "content", "created_on", "edited_on", "likes")
