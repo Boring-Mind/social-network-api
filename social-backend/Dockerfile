@@ -30,9 +30,11 @@ COPY ./backend .
 
 RUN python3 manage.py collectstatic
 
+# Update pip, wheel and setuptools to omit issues with package installation
+# Update setuptools to address CVE-2022-40897 vulnerability
+RUN pip3 install --no-cache-dir -U pip wheel setuptools
+
 # Fixing issue with missing attrs package in pytest
 # cffi package is needed for Argon2 dependency
 # Cryptography is needed for using RSA algorithm in JWT
-RUN pip install attrs cffi cryptography
-
-# ToDo: run migrations
+RUN pip3 install --no-cache-dir attrs cffi cryptography
