@@ -1,16 +1,21 @@
 from django.contrib.auth.models import User
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView
+from rest_framework.generics import (
+    CreateAPIView,
+    ListAPIView,
+    RetrieveAPIView,
+    RetrieveDestroyAPIView,
+)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 
-from api.models import Post
-from api.paginators import DefaultPaginator
+from api.models import Post, Like
+from api.paginators import DefaultPaginator, ExtendedPaginator
 from api.serializers import (
     UserSerializer,
     PostSerializer,
-    UserActivitySerializer,
     PostWithLikesSerializer,
+    LikeSerializer,
 )
 
 
@@ -26,24 +31,34 @@ class PostCreateApiView(CreateAPIView):
     permission_classes = (IsAuthenticated,)
 
 
-@method_decorator(cache_page(30), name="dispatch")
-class UserActivityApiView(ListAPIView):
-    queryset = User.objects.all().order_by("id")
-    serializer_class = UserActivitySerializer
-    permission_classes = (AllowAny,)
-    pagination_class = DefaultPaginator
-
-
-@method_decorator(cache_page(30), name="dispatch")
 class PostWithLikesApiView(RetrieveAPIView):
     queryset = Post.objects.all().prefetch_related("likes")
     serializer_class = PostWithLikesSerializer
     permission_classes = (AllowAny,)
 
 
-@method_decorator(cache_page(30), name="dispatch")
+@method_decorator(cache_page(60), name="dispatch")
 class PostListApiView(ListAPIView):
     queryset = Post.objects.all().prefetch_related("likes").order_by("id")
     serializer_class = PostWithLikesSerializer
     permission_classes = (AllowAny,)
     pagination_class = DefaultPaginator
+
+
+class LikesListApiView(ListAPIView):
+    queryset = Like.objects.all().order_by("id")
+    serializer_class = LikeSerializer
+    permission_classes = (AllowAny,)
+    pagination_class = ExtendedPaginator
+
+
+class LikeCreateApiView(CreateAPIView):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+    permission_classes = (AllowAny,)
+
+
+class LikeApiView(RetrieveDestroyAPIView):
+    queryset = Like.objects.all()
+    serializer_class = LikeSerializer
+    permission_classes = (AllowAny,)

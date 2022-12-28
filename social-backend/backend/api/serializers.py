@@ -2,11 +2,9 @@ from typing import Any, Dict
 
 from django.contrib.auth.models import User
 from django.contrib.auth.password_validation import validate_password
-from django.core.cache import cache
 from rest_framework import serializers
 
 from api.models import Post, Like
-from backend.middlewares import UpdateLastActivityMiddleware
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -71,24 +69,9 @@ class PostSerializer(serializers.ModelSerializer):
         return Post.objects.create(**validated_data)
 
 
-class UserActivitySerializer(serializers.ModelSerializer):
-    last_activity = serializers.SerializerMethodField()
-
-    class Meta:
-        model = User
-        fields = ("id", "last_activity", "last_login")
-
-    def get_last_activity(self, obj: User):
-        return cache.get(
-            UpdateLastActivityMiddleware.LAST_ACTIVITY_CACHE_TEMPLATE.format(
-                user_id=obj.id
-            )
-        )
-
-
 class LikeSerializer(serializers.ModelSerializer):
-    person = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
-    post = serializers.PrimaryKeyRelatedField(read_only=True, required=False)
+    person = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    post = serializers.PrimaryKeyRelatedField(queryset=Post.objects.all())
 
     class Meta:
         model = Like

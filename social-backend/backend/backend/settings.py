@@ -61,8 +61,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    # Middleware that updates the latest user activity
-    "backend.middlewares.UpdateLastActivityMiddleware",
 ]
 
 ROOT_URLCONF = "backend.urls"
@@ -186,5 +184,7 @@ CACHES = {
             "parser_class": "redis.connection.HiredisParser",
         },
         "KEY_PREFIX": "django_api",
+        # Lower default timeout to ensure that users will receive up-to-date information
+        "TIMEOUT": 30,
     }
 }
