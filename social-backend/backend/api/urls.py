@@ -1,14 +1,8 @@
 from django.urls import path
 
-from api.views import (
-    UserSignupApiView,
-    PostCreateApiView,
-    PostApiView,
-    PostListApiView,
-    LikesListApiView,
-    LikeApiView,
-    LikeCreateApiView,
-)
+from api.views.like.views import LikeCreateApiView, LikesListApiView, LikeApiView
+from api.views.post.views import PostCreateApiView, PostListApiView, PostApiView
+from api.views.user.views import UserSignupApiView
 
 app_name = "api"
 
