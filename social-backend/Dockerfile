@@ -37,4 +37,5 @@ RUN pip3 install --no-cache-dir -U pip wheel setuptools
 # Fixing issue with missing attrs package in pytest
 # cffi package is needed for Argon2 dependency
 # Cryptography is needed for using RSA algorithm in JWT
-RUN pip3 install --no-cache-dir attrs cffi cryptography
+# six package is needed for django_behave
+RUN pip3 install --no-cache-dir attrs cffi cryptography six

@@ -10,6 +10,8 @@ services:
       - "8000:8000"
     # while loop is needed to postpone Django start until DB start
     command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python3 manage.py migrate; python3 manage.py initadmin; uwsgi --ini /application/uwsgi.ini'
+    # Command for BDD tests
+    # command: bash -c 'while !</dev/tcp/db/5432; do sleep 1; done; python3 manage.py migrate; python3 manage.py initadmin; python3 manage.py behave'
     restart: unless-stopped
     depends_on:
       - cache
