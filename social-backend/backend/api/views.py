@@ -13,7 +13,7 @@ from api.models import Post, Like
 from api.paginators import DefaultPaginator, ExtendedPaginator
 from api.serializers import (
     UserSerializer,
-    PostSerializer,
+    PostCreateSerializer,
     PostWithLikesSerializer,
     LikeSerializer,
 )
@@ -27,11 +27,11 @@ class UserSignupApiView(CreateAPIView):
 
 class PostCreateApiView(CreateAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostSerializer
+    serializer_class = PostCreateSerializer
     permission_classes = (IsAuthenticated,)
 
 
-class PostWithLikesApiView(RetrieveAPIView):
+class PostApiView(RetrieveAPIView):
     queryset = Post.objects.all().prefetch_related("likes")
     serializer_class = PostWithLikesSerializer
     permission_classes = (AllowAny,)

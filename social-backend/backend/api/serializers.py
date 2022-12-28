@@ -47,8 +47,8 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
-class PostSerializer(serializers.ModelSerializer):
-    """Post serializer.
+class PostCreateSerializer(serializers.ModelSerializer):
+    """Post create serializer.
 
     Write to Post can be performed only using authenticated user.
     """
