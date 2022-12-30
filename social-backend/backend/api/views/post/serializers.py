@@ -1,6 +1,8 @@
+import serpy
 from rest_framework import serializers
 
 from api.models import Post
+from api.serpy.fields import DateTimeField
 from api.views.like.serializers import LikeSerializer
 
 
@@ -33,3 +35,25 @@ class PostWithLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = ("id", "author", "content", "created_on", "edited_on", "likes")
+
+
+# Serpy serializers experiment
+class PostCreateSerpySerializer(serpy.Serializer):
+    author = serpy.IntField(attr="id")
+    content = serpy.StrField()
+
+
+class LikesSerpySerializer(serpy.Serializer):
+    id = serpy.IntField()
+    person = serpy.IntField(attr="id")
+    post = serpy.IntField(attr="id")
+    created = DateTimeField()
+
+
+class PostWithLikesSerpySerializer(serpy.Serializer):
+    id = serpy.IntField()
+    author = serpy.IntField(attr="id")
+    content = serpy.StrField()
+    created_on = DateTimeField()
+    edited_on = DateTimeField()
+    likes = LikesSerpySerializer(many=True, call=True, attr="likes.all")

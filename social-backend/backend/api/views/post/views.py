@@ -24,5 +24,6 @@ class PostApiView(RetrieveAPIView):
 class PostListApiView(ListAPIView):
     queryset = Post.objects.all().prefetch_related("likes").order_by("id")
     serializer_class = PostWithLikesSerializer
+    # serializer_class = PostWithLikesSerpySerializer
     permission_classes = (AllowAny,)
     pagination_class = DefaultPaginator

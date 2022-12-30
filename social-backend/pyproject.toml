@@ -18,6 +18,7 @@ django-redis-cache = "^3.0.1"
 # HiRedis parser for Django Redis cache
 hiredis = "^2.1.0"
 drf-orjson-renderer = "^1.7.1"
+serpy = "^0.3.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.12.0"
