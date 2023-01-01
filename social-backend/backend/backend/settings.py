@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     # Third-party apps
-    "behave_django",
     # Our apps
     "api",
 ]
