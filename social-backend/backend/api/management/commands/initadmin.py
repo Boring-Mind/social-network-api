@@ -9,7 +9,7 @@ class Command(BaseCommand):
         email = config("DJANGO_SUPERUSER_EMAIL")
         password = config("DJANGO_SUPERUSER_PASSWORD")
 
-        if not User.objects.filter(username=username).exists():
+        if not User.objects.filter(is_superuser=True).exists():
             print(f"Creating account for {username} ({email})")
             User.objects.create_superuser(
                 email=email, username=username, password=password
