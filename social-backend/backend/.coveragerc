@@ -11,3 +11,4 @@ omit =
     **/wsgi.py
     **/manage.py
     **/apps.py
+    **/urls.py
