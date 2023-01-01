@@ -1,0 +1,13 @@
+[run]
+branch = True
+
+[report]
+skip_covered = True
+skip_empty = True
+omit =
+    **/settings.py
+    **/migrations/**
+    **/asgi.py
+    **/wsgi.py
+    **/manage.py
+    **/apps.py
